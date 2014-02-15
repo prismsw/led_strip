@@ -10,7 +10,7 @@ const int bled = 4;
 const int heart = 13;
 
 int mode = 0;
-int fade = 1;
+double fade = 0.1;
 int interval = 10;
 long lastUpdate = 0;
 
@@ -32,9 +32,6 @@ void loop() {
   processIO();
   setColor(color);
   digitalWrite(heart, heartState);
-  delay(1000);
-  beat();
-  delay(1000);
   
   if(shouldTick(lastBeat, pulse)){
     beat();
@@ -60,16 +57,21 @@ void processIO() {
         color->setR(Serial.parseInt());
         color->setG(Serial.parseInt());
         color->setB(Serial.parseInt());
-        mode = 0;
         break;
       case 1:
-        mode = 1;
+        if(mode == 0) {
+          mode = 1;
+        }
+        else {
+          mode = 0;
+        }
         break;
       case 2:
         color->setH(Serial.parseFloat());
         color->setS(Serial.parseFloat());
         color->setV(Serial.parseFloat());
-        mode = 0;
+        break;
+      default:
         break;
     }
     
