@@ -1,6 +1,6 @@
 #include "Color.h"
 
-Color* color = new Color(0, 0, 0);
+Color* color = new Color(255, 0, 0);
 Color* targetColor = new Color(0, 0, 0);
 
 const int rled = 2;
@@ -11,7 +11,7 @@ const int heart = 13;
 
 int mode = 0;
 double fade = 0.1;
-int interval = 10;
+int interval = 1;
 long lastUpdate = 0;
 
 int pulse = 1000;
@@ -50,38 +50,42 @@ void loop() {
 
 void processIO() {
  while(Serial.available() > 0) {
-    int action = Serial.parseInt();
+    String cmd = Serial.readStringUntil(' ');
     
-    switch(action) {
-      case 0:
-        color->setR(Serial.parseInt());
-        color->setG(Serial.parseInt());
-        color->setB(Serial.parseInt());
-        break;
-      case 1:
-        if(mode == 0) {
-          mode = 1;
-        }
-        else {
-          mode = 0;
-        }
-        break;
-      case 2:
-        color->setH(Serial.parseFloat());
-        color->setS(Serial.parseFloat());
-        color->setV(Serial.parseFloat());
-        break;
-      default:
-        break;
+    if(cmd == "rgb") {
+      color->setR(Serial.parseInt());
+      color->setG(Serial.parseInt());
+      color->setB(Serial.parseInt());
     }
-    
-    Serial.println(color->getR());
-    Serial.println(color->getG());
-    Serial.println(color->getB());
-    Serial.println("");
-    
-    if(Serial.read() == '\n') {
-      return;
+    else if(cmd == "fade") {
+      mode = 1;
+      fade = Serial.parseFloat();
+    }
+    else if(cmd == "nofade") {
+      mode = 0; 
+    }
+    else if(cmd == "hsv") {
+      color->setH(Serial.parseFloat());
+      color->setS(Serial.parseFloat());
+      color->setV(Serial.parseFloat());
+    }
+    else if(cmd == "h") {
+      color->setH(Serial.parseFloat());
+    }
+    else if(cmd == "s") {
+      color->setS(Serial.parseFloat());
+    }
+    else if(cmd == "v") {
+      color->setV(Serial.parseFloat());
+    }
+    else if(cmd == "print") {
+      Serial.println(color->getR());
+      Serial.println(color->getG());
+      Serial.println(color->getB());
+      Serial.println("");
+    }
+    else {
+     Serial.println("Invalid command"); 
     }
   } 
 }
@@ -115,3 +119,4 @@ void beat() {
     heartState = LOW;
   }
 }
+

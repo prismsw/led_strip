@@ -220,3 +220,4 @@ void Color::incS(double s) {
 void Color::incV(double v) {
   this->setV(this->getV() + v);  
 }
+

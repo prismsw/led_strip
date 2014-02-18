@@ -37,3 +37,4 @@ class Color {
     void incS(double);
     void incV(double);
 };
+
