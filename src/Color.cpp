@@ -207,7 +207,7 @@ void Color::setHSV(double h, double s, double v) {
 }
 
 void Color::incH(double h) {
-    this->setH(this->getH() + h);
+    this->setH((this->getH() + h));
 }
 
 void Color::incS(double s) {
@@ -216,5 +216,14 @@ void Color::incS(double s) {
 
 void Color::incV(double v) {
     this->setV(this->getV() + v);
+}
+
+void Color::cycleH(double h) {
+    if(this->h >= 360.0) {
+        this->h = 0.0;
+    }
+    else {
+        this->incH(h);
+    }
 }
 

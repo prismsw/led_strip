@@ -1,4 +1,7 @@
 #include "Color.h"
+#include "Effect.h"
+#include "StaticEffect.h"
+#include "FadeEffect.h"
 #include <IRremote.h>
 
 Color* color = new Color(0, 0, 0);
@@ -11,10 +14,6 @@ const int HEART_PIN = 13;
 
 const int IR_PIN = 11;
 
-// Light control
-int mode = 0;
-double fade = 0.1;
-
 // Timer control
 int interval = 1;
 long lastUpdate = 0;
@@ -23,6 +22,9 @@ long lastUpdate = 0;
 int pulse = 1000;
 int heartState = LOW;
 long lastBeat = 0;
+
+// Effects
+Effect* effect = new StaticEffect();
 
 // IR
 IRrecv irrecv(IR_PIN);
@@ -48,15 +50,29 @@ void loop() {
 
     digitalWrite(HEART_PIN, heartState);
 
-    if(shouldTick(lastBeat, pulse)) {
-        beat();
+    if((millis() - lastBeat) > pulse) {
+        blink(&heartState);
         lastBeat = millis();
     }
 
-    if(shouldTick(lastUpdate, interval)) {
-        lastUpdate = millis();
+    effect->nextColor(color);
+}
+
+void setColor(Color* c) {
+    analogWrite(R_PIN, c->getR());
+    analogWrite(G_PIN, c->getG());
+    analogWrite(B_PIN, c->getB());
+}
+
+void blink(int* var) {
+    if(*var == LOW) {
+        *var = HIGH;
+    }
+    else {
+        *var = LOW;
     }
 }
+
 
 void handleSerial() {
     while(Serial.available() > 0) {
@@ -68,11 +84,8 @@ void handleSerial() {
             color->setB(Serial.parseInt());
         }
         else if(cmd == "fade") {
-            mode = 1;
-            fade = Serial.parseFloat();
         }
         else if(cmd == "nofade") {
-            mode = 0;
         }
         else if(cmd == "hsv") {
             color->setH(Serial.parseFloat());
@@ -99,36 +112,6 @@ void handleSerial() {
             return;
         }
         Serial.println(cmd);
-    }
-}
-
-int setColor(Color* c) {
-    analogWrite(R_PIN, c->getR());
-    analogWrite(G_PIN, c->getG());
-    analogWrite(B_PIN, c->getB());
-}
-
-boolean shouldTick(long last, int interval) {
-    unsigned long time = millis();
-
-    long diff = time - last;
-
-    return diff > interval;
-}
-
-void strip() {
-    color->incH(fade);
-    if(color->getH() >= 360 || color->getH() <= 0) {
-        fade = -fade;
-    }
-}
-
-void beat() {
-    if(heartState == LOW) {
-        heartState = HIGH;
-    }
-    else {
-        heartState = LOW;
     }
 }
 
