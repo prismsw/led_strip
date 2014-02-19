@@ -6,13 +6,13 @@
 
 class FadeEffect : public Effect {
     private:
-        int amount;
+        double amount;
         int interval;
         long lastFade;
 
         bool shouldTick(long time);
     public:
-        FadeEffect(int amount, int interval);
+        FadeEffect(double amount, int interval);
         virtual void nextColor(Color* current);
 };
 

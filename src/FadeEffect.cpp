@@ -1,7 +1,7 @@
 #include "FadeEffect.h"
 #include <Arduino.h>
 
-FadeEffect::FadeEffect(int amount, int interval) {
+FadeEffect::FadeEffect(double amount, int interval) {
     this->amount = amount;
     this->interval = interval;
     this->lastFade = millis();

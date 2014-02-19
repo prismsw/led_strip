@@ -14,10 +14,6 @@ const int HEART_PIN = 13;
 
 const int IR_PIN = 11;
 
-// Timer control
-int interval = 1;
-long lastUpdate = 0;
-
 // Heartbeat
 int pulse = 1000;
 int heartState = LOW;
@@ -281,6 +277,8 @@ void switchIRVal(int irval) {
             break;
         case 0xFF609F:
             // fade3
+            delete effect;
+            effect = new FadeEffect(0.01, 1);
             break;
         case 0xFFE01F:
             // fade7
