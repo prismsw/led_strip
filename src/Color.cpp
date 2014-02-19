@@ -150,6 +150,13 @@ void Color::setB(int blue) {
     updateHSV();
 }
 
+void Color::setRGB(int r, int g, int b) {
+    this->r = boundedRGB(r);
+    this->g = boundedRGB(g);
+    this->b = boundedRGB(b);
+    updateHSV();
+}
+
 void Color::incR(int red) {
     r = boundedRGB(r + red);
     updateHSV();
@@ -179,46 +186,24 @@ double Color::getV() {
 
 void Color::setH(double h) {
     this->h = boundedH(h);
-    if(h < 0.0) {
-        this->h = 0.0;
-    }
-    else if(h > 360.0) {
-        this->h = 360.0;
-    }
-    else {
-        this->h = h;
-    }
     updateRGB();
 }
 
 void Color::setS(double s) {
-    if(s < 0.0) {
-        this->s = 0.0;
-    }
-    else if(s > 1.0) {
-        this->s = 1.0;
-    }
-    else {
-        this->s = s;
-    }
+    this->s = boundedSV(s);
     updateRGB();
 }
 
 void Color::setV(double v) {
-    if(v < 0.0) {
-        this->v = 0.0;
-    }
-    else if(v > 1.0) {
-        this->v = 1.0;
-    }
-    else {
-        this->v = v;
-    }
+    this->v = boundedSV(v);
     updateRGB();
 }
 
 void Color::setHSV(double h, double s, double v) {
-
+    this->h = boundedH(h);
+    this->s = boundedSV(s);
+    this->v = boundedSV(v);
+    updateRGB();
 }
 
 void Color::incH(double h) {

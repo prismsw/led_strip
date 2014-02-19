@@ -163,24 +163,24 @@ void switchIRVal(int irval) {
             color->incH(60.0);
             break;
         case 0xFF02FD:
-            color = new Color(0,0,0);
+            color->setRGB(0,0,0);
             // power
             break;
         case 0xFF1AE5:
             // red
-            color = new Color(255,0,0);
+            color->setRGB(255,0,0);
             break;
         case 0xFF9A65:
             // green
-            color = new Color(0,255,0);
+            color->setRGB(0,255,0);
             break;
         case 0xFFA25D:
             // blue
-            color = new Color(0,0,255);
+            color->setRGB(0,0,255);
             break;
         case 0xFF22DD:
             // white
-            color = new Color(255,255,255);
+            color->setRGB(255,255,255);
             break;
         case 0xFF2AD5:
             // color
