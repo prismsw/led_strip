@@ -1,19 +1,20 @@
 #include "Color.h"
+#include <IRremote.h>
 
 Color* color = new Color(0, 0, 0);
-Color* targetColor = new Color(0, 0, 0);
 
-const int rled = 2;
-const int gled = 3;
-const int bled = 4;
+const int R_PIN = 2;
+const int G_PIN = 3;
+const int B_PIN = 4;
 
-const int heart = 13;
+const int HEART_PIN = 13;
 
-const int button = 52;
+const int IR_PIN = 11;
 
 // Light control
 int mode = 0;
 double fade = 0.1;
+
 // Timer control
 int interval = 1;
 long lastUpdate = 0;
@@ -23,26 +24,29 @@ int pulse = 1000;
 int heartState = LOW;
 long lastBeat = 0;
 
-// Button
-int lastButtonState = 0;
+// IR
+IRrecv irrecv(IR_PIN);
+decode_results irresults;
+int lastResult = 0x0;
 
 void setup() {
-    pinMode(rled, OUTPUT);
-    pinMode(gled, OUTPUT);
-    pinMode(bled, OUTPUT);
+    pinMode(R_PIN, OUTPUT);
+    pinMode(G_PIN, OUTPUT);
+    pinMode(B_PIN, OUTPUT);
 
-    pinMode(heart, OUTPUT);
-
-    pinMode(button, INPUT);
+    pinMode(HEART_PIN, OUTPUT);
 
     Serial.begin(9600);
+
+    irrecv.enableIRIn();
 }
 
 void loop() {
-    processIO();
+    handleIR();
+    handleSerial();
     setColor(color);
-    processButton();
-    digitalWrite(heart, heartState);
+
+    digitalWrite(HEART_PIN, heartState);
 
     if(shouldTick(lastBeat, pulse)) {
         beat();
@@ -50,51 +54,11 @@ void loop() {
     }
 
     if(shouldTick(lastUpdate, interval)) {
-        int pot = analogRead(A15);
-        if(mode == 1) {
-            strip();
-        }
-        else if(mode == 10) {
-            double hue = pot/1024.0 * 360.0;
-            color->setH(hue);
-        }
-        else if(mode == 11) {
-            double sat = pot/1024.0;
-            color->setS(sat);
-        }
-        else if(mode == 12) {
-            double val = pot/1024.0;
-            color->setV(val);
-        }
         lastUpdate = millis();
     }
 }
 
-void processButton() {
-    int buttonState = digitalRead(button);
-    if(buttonState != lastButtonState) {
-        if(buttonState == LOW) {
-            cycleMode();
-            Serial.println(mode);
-        }
-    }
-    lastButtonState = buttonState;
-}
-
-void cycleMode() {
-    switch(mode) {
-        case 1:
-            mode =  10;
-            break;
-        case 12:
-            mode = 0;
-            break;
-        default:
-            mode++;
-    }
-}
-
-void processIO() {
+void handleSerial() {
     while(Serial.available() > 0) {
         String cmd = Serial.readStringUntil(' ');
 
@@ -109,15 +73,6 @@ void processIO() {
         }
         else if(cmd == "nofade") {
             mode = 0;
-        }
-        else if(cmd == "shiftH") {
-            mode = 10;
-        }
-        else if(cmd == "shiftS") {
-            mode = 11;
-        }
-        else if(cmd == "shiftV") {
-            mode = 12;
         }
         else if(cmd == "hsv") {
             color->setH(Serial.parseFloat());
@@ -148,9 +103,9 @@ void processIO() {
 }
 
 int setColor(Color* c) {
-    analogWrite(rled, c->getR());
-    analogWrite(gled, c->getG());
-    analogWrite(bled, c->getB());
+    analogWrite(R_PIN, c->getR());
+    analogWrite(G_PIN, c->getG());
+    analogWrite(B_PIN, c->getB());
 }
 
 boolean shouldTick(long last, int interval) {
@@ -177,3 +132,175 @@ void beat() {
     }
 }
 
+void handleIR() {
+    if(irrecv.decode(&irresults)) {
+        Serial.println(irresults.value, HEX);
+        int val = irresults.value;
+        if(val == 0xFFFFFFFF) {
+            val = lastResult;
+        }
+        else {
+            lastResult = val;
+        }
+        switchIRVal(val);
+        irrecv.resume();
+    }
+}
+
+void switchIRVal(int irval) {
+    // I am so sorry...
+    switch(irval) {
+        case 0xFF3AC5:
+            // br_up
+            color->incV(0.1);
+            break;
+        case 0xFFBA45:
+            // br_down
+            color->incV(-0.1);
+            break;
+        case 0xFF827D:
+            // next
+            color->incH(60.0);
+            break;
+        case 0xFF02FD:
+            color = new Color(0,0,0);
+            // power
+            break;
+        case 0xFF1AE5:
+            // red
+            color = new Color(255,0,0);
+            break;
+        case 0xFF9A65:
+            // green
+            color = new Color(0,255,0);
+            break;
+        case 0xFFA25D:
+            // blue
+            color = new Color(0,0,255);
+            break;
+        case 0xFF22DD:
+            // white
+            color = new Color(255,255,255);
+            break;
+        case 0xFF2AD5:
+            // color
+            break;
+        case 0xFFAA55:
+            // color
+            break;
+        case 0xFF926D:
+            // color
+            break;
+        case 0xFF12ED:
+            // color
+            break;
+        case 0xFF0AF5:
+            // color
+            break;
+        case 0xFF8A75:
+            // color
+            break;
+        case 0xFFB24D:
+            // color
+            break;
+        case 0xFF32CD:
+            // color
+            break;
+        case 0xFF38C7:
+            // color
+            break;
+        case 0xFFB847:
+            // color
+            break;
+        case 0xFF7887:
+            // color
+            break;
+        case 0xFFF807:
+            // color
+            break;
+        case 0xFF18E7:
+            // color
+            break;
+        case 0xFF9867:
+            // color
+            break;
+        case 0xFF58A7:
+            // color
+            break;
+        case 0xFFD827:
+            // color
+            break;
+        case 0xFF28D7:
+            // r_up
+            color->incR(10);
+            break;
+        case 0xFFA857:
+            // g_up
+            color->incG(10);
+            break;
+        case 0xFF6897:
+            // b_up
+            color->incB(10);
+            break;
+        case 0xFFE817:
+            // quick
+            break;
+        case 0xFF08F7:
+            // r_down
+            color->incR(-10);
+            break;
+        case 0xFF8877:
+            // g_down
+            color->incG(-10);
+            break;
+        case 0xFF48B7:
+            // b_down
+            color->incB(-10);
+            break;
+        case 0xFFC837:
+            // slow
+            break;
+        case 0xFF30CF:
+            // p1
+            color->incH(10.0);
+            break;
+        case 0xFFB04F:
+            // p2
+            color->incS(0.1);
+            break;
+        case 0xFF708F:
+            // p3
+            color->incV(0.1);
+            break;
+        case 0xFFF00F:
+            // auto
+            break;
+        case 0xFF10EF:
+            // p4
+            color->incH(-10.0);
+            break;
+        case 0xFF906F:
+            // p5
+            color->incS(-0.1);
+            break;
+        case 0xFF50AF:
+            // p6
+            color->incV(-0.1);
+            break;
+        case 0xFFD02F:
+            // flash
+            break;
+        case 0xFF20DF:
+            // jump3
+            break;
+        case 0xFFA05F:
+            // jump7
+            break;
+        case 0xFF609F:
+            // fade3
+            break;
+        case 0xFFE01F:
+            // fade7
+            break;
+    }
+}
