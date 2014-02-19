@@ -19,16 +19,16 @@ Color::Color(int red, int green, int blue) {
     updateHSV();
 }
 
-int Color::boundedRGB(int v) {
-    if(v > 255) {
-        return 255;
-    }
-    else if(v < 0) {
-        return 0;
-    }
-    else {
-        return v;
-    }
+int Color::boundedRGB(int val) {
+    return boundedVal(val, 0, 255);
+}
+
+double Color::boundedH(double val) {
+    return boundedVal(val, 0.0, 360.0);
+}
+
+double Color::boundedSV(double val) {
+    return boundedVal(val, 0.0, 1.0);
 }
 
 
@@ -178,6 +178,7 @@ double Color::getV() {
 }
 
 void Color::setH(double h) {
+    this->h = boundedH(h);
     if(h < 0.0) {
         this->h = 0.0;
     }
@@ -214,6 +215,10 @@ void Color::setV(double v) {
         this->v = v;
     }
     updateRGB();
+}
+
+void Color::setHSV(double h, double s, double v) {
+
 }
 
 void Color::incH(double h) {

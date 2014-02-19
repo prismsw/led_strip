@@ -8,7 +8,22 @@ private:
     double s;
     double v;
 
+    template <typename T>
+    T boundedVal(T val, T lbound, T ubound) {
+        if(val < lbound) {
+            return lbound;
+        }
+        else if(val > ubound) {
+            return ubound;
+        }
+        else {
+            return val;
+        }
+    }
+
     int boundedRGB(int);
+    double boundedH(double);
+    double boundedSV(double);
     void updateHSV();
     void updateRGB();
 public:
@@ -23,6 +38,8 @@ public:
     void setG(int);
     void setB(int);
 
+    void setRGB(int, int, int);
+
     void incR(int);
     void incG(int);
     void incB(int);
@@ -35,6 +52,8 @@ public:
     void setH(double);
     void setS(double);
     void setV(double);
+
+    void setHSV(double, double, double);
 
     void incH(double);
     void incS(double);
