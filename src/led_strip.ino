@@ -132,11 +132,11 @@ void switchIRVal(int irval) {
     switch(irval) {
         case 0xFF3AC5:
             // br_up
-            color->incV(0.1);
+            color->incV(0.07);
             break;
         case 0xFFBA45:
             // br_down
-            color->incV(-0.1);
+            color->incV(-0.07);
             break;
         case 0xFF827D:
             // next
@@ -257,16 +257,16 @@ void switchIRVal(int irval) {
             // slow
             break;
         case 0xFF30CF:
-            // p1
+            // h_up
             color->incH(10.0);
             break;
         case 0xFFB04F:
-            // p2
-            color->incS(0.1);
+            // s_up
+            color->incS(0.04);
             break;
         case 0xFF708F:
-            // p3
-            color->incV(0.1);
+            // v_up
+            color->incV(0.04);
             break;
         case 0xFFF00F:
             // auto
@@ -274,16 +274,16 @@ void switchIRVal(int irval) {
             effect = new StaticEffect();
             break;
         case 0xFF10EF:
-            // p4
+            // h_down
             color->incH(-10.0);
             break;
         case 0xFF906F:
-            // p5
-            color->incS(-0.1);
+            // s_down
+            color->incS(-0.04);
             break;
         case 0xFF50AF:
-            // p6
-            color->incV(-0.1);
+            // v_down
+            color->incV(-0.04);
             break;
         case 0xFFD02F:
             // flash
