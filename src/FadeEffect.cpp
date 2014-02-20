@@ -1,20 +1,10 @@
 #include "FadeEffect.h"
 #include <Arduino.h>
 
-FadeEffect::FadeEffect(double amount, int interval) {
+FadeEffect::FadeEffect(double amount, int interval):TimedEffect(interval) {
     this->amount = amount;
-    this->interval = interval;
-    this->lastFade = millis();
 }
 
-void FadeEffect::nextColor(Color* current) {
-    long time = millis();
-    if(shouldTick(time)) {
-        current->cycleH(amount);
-        lastFade = time;
-    }
-}
-
-bool FadeEffect::shouldTick(long time) {
-    return (time - lastFade) > interval;
+void FadeEffect::tick(Color* current) {
+    current->cycleH(amount);
 }

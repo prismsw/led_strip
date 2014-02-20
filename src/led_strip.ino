@@ -2,6 +2,7 @@
 #include "Effect.h"
 #include "StaticEffect.h"
 #include "FadeEffect.h"
+#include "BlinkEffect.h"
 #include <IRremote.h>
 
 Color* color = new Color(0, 0, 0);
@@ -268,6 +269,8 @@ void switchIRVal(int irval) {
             break;
         case 0xFFD02F:
             // flash
+            delete effect;
+            effect = new BlinkEffect(300);
             break;
         case 0xFF20DF:
             // jump3

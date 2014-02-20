@@ -2,18 +2,15 @@
 #define FADE_EFFECT_H
 
 #include "Color.h"
-#include "Effect.h"
+#include "TimedEffect.h"
 
-class FadeEffect : public Effect {
+class FadeEffect : public TimedEffect {
     private:
         double amount;
-        int interval;
-        long lastFade;
-
-        bool shouldTick(long time);
+    protected:
+        virtual void tick(Color* current);
     public:
         FadeEffect(double amount, int interval);
-        virtual void nextColor(Color* current);
 };
 
 #endif
