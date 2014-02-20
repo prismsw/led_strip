@@ -140,7 +140,7 @@ void switchIRVal(int irval) {
             break;
         case 0xFF827D:
             // next
-            color->incH(60.0);
+            color->cycleH(60.0);
             break;
         case 0xFF02FD:
             color->setRGB(0,0,0);
@@ -163,52 +163,68 @@ void switchIRVal(int irval) {
             color->setRGB(255,255,255);
             break;
         case 0xFF2AD5:
-            // color
+            // orange
+            color->setRGB(255,20,0);
             break;
         case 0xFFAA55:
-            // color
+            // light green
+            color->setRGB(0,255,100);
             break;
         case 0xFF926D:
-            // color
+            // navy blue
+            color->setRGB(0,100,255);
             break;
         case 0xFF12ED:
-            // color
+            // skin1?
+            color->setRGB(255,50,50);
             break;
         case 0xFF0AF5:
-            // color
+            // light orange
+            color->setRGB(255,50,0);
             break;
         case 0xFF8A75:
-            // color
+            // light blue
+            color->setRGB(0,210,255);
             break;
         case 0xFFB24D:
-            // color
+            // dark purple
+            color->setRGB(140,0,255);
             break;
         case 0xFF32CD:
-            // color
+            // better white
+            color->setRGB(255,200,140);
             break;
         case 0xFF38C7:
-            // color
+            // dark orange
+            color->setRGB(64,5,0);
             break;
         case 0xFFB847:
-            // color
+            // ocean blue
+            color->setRGB(0,190,180);
             break;
         case 0xFF7887:
-            // color
+            // pink
+            color->setRGB(255,0,215);
             break;
         case 0xFFF807:
-            // color
+            // sky blue
+            color->setRGB(0,255,255);
             break;
         case 0xFF18E7:
-            // color
+            // yellow
+            color->setRGB(255,100,0);
             break;
         case 0xFF9867:
-            // color
+            // azur
+            color->setRGB(0,127,255);
             break;
         case 0xFF58A7:
-            // color
+            // dark pink
+            color->setRGB(255,0,120);
             break;
         case 0xFFD827:
-            // color
+            // whatever blue
+            color->setRGB(0,220,255);
             break;
         case 0xFF28D7:
             // r_up
@@ -254,6 +270,8 @@ void switchIRVal(int irval) {
             break;
         case 0xFFF00F:
             // auto
+            delete effect;
+            effect = new StaticEffect();
             break;
         case 0xFF10EF:
             // p4

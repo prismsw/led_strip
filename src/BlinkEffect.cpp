@@ -12,9 +12,6 @@ void BlinkEffect::tick(Color* current) {
         color = new Color(*current);
     }
 
-    Serial.println((int)color);
-    Serial.println((int)current);
-    Serial.println();
     if(isOff(current)) {
         *current = *color;
     }
