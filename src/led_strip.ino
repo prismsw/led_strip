@@ -3,6 +3,8 @@
 #include "StaticEffect.h"
 #include "FadeEffect.h"
 #include "BlinkEffect.h"
+#include "Jump3Effect.h"
+#include "Jump7Effect.h"
 #include <IRremote.h>
 
 Color* color = new Color(0, 0, 0);
@@ -22,6 +24,7 @@ long lastBeat = 0;
 
 // Effects
 Effect* effect = new StaticEffect();
+double speed = 1.0;
 
 // IR
 IRrecv irrecv(IR_PIN);
@@ -67,6 +70,17 @@ void blink(int* var) {
     }
     else {
         *var = LOW;
+    }
+}
+
+void incSpeed(double val) {
+    speed = speed + val;
+
+    if(speed <= 0.1) {
+        speed = 0.1;
+    }
+    else if(speed >= 8.0) {
+        speed = 8.0;
     }
 }
 
@@ -240,6 +254,7 @@ void switchIRVal(int irval) {
             break;
         case 0xFFE817:
             // quick
+            incSpeed(0.1);
             break;
         case 0xFF08F7:
             // r_down
@@ -255,6 +270,7 @@ void switchIRVal(int irval) {
             break;
         case 0xFFC837:
             // slow
+            incSpeed(-0.1);
             break;
         case 0xFF30CF:
             // h_up
@@ -288,21 +304,27 @@ void switchIRVal(int irval) {
         case 0xFFD02F:
             // flash
             delete effect;
-            effect = new BlinkEffect(300);
+            effect = new BlinkEffect(1000 * 1/speed);
             break;
         case 0xFF20DF:
             // jump3
+            delete effect;
+            effect = new Jump3Effect(1000 * 1/speed);
             break;
         case 0xFFA05F:
             // jump7
+            delete effect;
+            effect = new Jump7Effect(1000 * 1/speed);
             break;
         case 0xFF609F:
             // fade3
             delete effect;
-            effect = new FadeEffect(0.01, 1);
+            effect = new FadeEffect(0.1 * speed, 1);
             break;
         case 0xFFE01F:
             // fade7
+            delete effect;
+            effect = new FadeEffect(0.01 * speed, 1);
             break;
     }
 }
