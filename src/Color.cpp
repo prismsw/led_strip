@@ -227,3 +227,12 @@ void Color::cycleH(double h) {
     }
 }
 
+bool Color::operator==(const Color &other) {
+    return (this->r == other.r &&
+            this->g == other.g &&
+            this->b == other.b);
+}
+
+bool Color::operator!=(const Color &other) {
+    return !(*this == other);
+}

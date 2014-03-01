@@ -1,21 +1,14 @@
+#include "Pins.h"
 #include "Color.h"
 #include "Effect.h"
 #include "StaticEffect.h"
 #include "FadeEffect.h"
 #include "BlinkEffect.h"
-#include "Jump3Effect.h"
+#include "KnockEffect.h"
 #include "Jump7Effect.h"
 #include <IRremote.h>
 
 Color* color = new Color(0, 0, 0);
-
-const int R_PIN = 2;
-const int G_PIN = 3;
-const int B_PIN = 4;
-
-const int HEART_PIN = 13;
-
-const int IR_PIN = 11;
 
 // Heartbeat
 int pulse = 1000;
@@ -30,6 +23,7 @@ double speed = 1.0;
 IRrecv irrecv(IR_PIN);
 decode_results irresults;
 int lastResult = 0x0;
+
 
 void setup() {
     pinMode(R_PIN, OUTPUT);
@@ -309,7 +303,7 @@ void switchIRVal(int irval) {
         case 0xFF20DF:
             // jump3
             delete effect;
-            effect = new Jump3Effect(1000 * 1/speed);
+            effect = new KnockEffect(60.0);
             break;
         case 0xFFA05F:
             // jump7

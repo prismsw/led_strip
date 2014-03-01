@@ -63,5 +63,8 @@ class Color {
         void incV(double);
 
         void cycleH(double);
+
+        bool operator== (const Color &other);
+        bool operator!= (const Color &other);
 };
 #endif
