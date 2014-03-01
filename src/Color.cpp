@@ -219,12 +219,7 @@ void Color::incV(double v) {
 }
 
 void Color::cycleH(double h) {
-    if(this->h >= 360.0) {
-        this->h = 0.0;
-    }
-    else {
-        this->incH(h);
-    }
+    this->setH(fmod(this->h + h, 360.0));
 }
 
 bool Color::operator==(const Color &other) {
