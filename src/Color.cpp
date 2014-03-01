@@ -12,10 +12,10 @@
                      : \
                          ((x) >= (z) ? (x) : (z)))
 
-Color::Color(int red, int green, int blue) {
-    r = red;
-    g = green;
-    b = blue;
+Color::Color(int r, int g, int b) {
+    this->r = r;
+    this->g = g;
+    this->b = b;
     updateHSV();
 }
 
@@ -135,18 +135,18 @@ int Color::getB() {
     return b;
 }
 
-void Color::setR(int red) {
-    r = boundedRGB(red);
+void Color::setR(int r) {
+    this->r = boundedRGB(r);
     updateHSV();
 }
 
-void Color::setG(int green) {
-    g = boundedRGB(green);
+void Color::setG(int g) {
+    this->g = boundedRGB(g);
     updateHSV();
 }
 
-void Color::setB(int blue) {
-    b = boundedRGB(blue);
+void Color::setB(int b) {
+    this->b = boundedRGB(b);
     updateHSV();
 }
 
@@ -157,18 +157,18 @@ void Color::setRGB(int r, int g, int b) {
     updateHSV();
 }
 
-void Color::incR(int red) {
-    r = boundedRGB(r + red);
+void Color::incR(int r) {
+    this->r = boundedRGB(this->r + r);
     updateHSV();
 }
 
-void Color::incG(int green) {
-    g = boundedRGB(g + green);
+void Color::incG(int g) {
+    this->g = boundedRGB(this->g + g);
     updateHSV();
 }
 
-void Color::incB(int blue) {
-    b = boundedRGB(b + blue);
+void Color::incB(int b) {
+    this->b = boundedRGB(this->b + b);
     updateHSV();
 }
 

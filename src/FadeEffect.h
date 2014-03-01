@@ -4,6 +4,9 @@
 #include "Color.h"
 #include "TimedEffect.h"
 
+/**
+ * FadeEffect - gradually moves the color through the whole spectrum
+ */
 class FadeEffect : public TimedEffect {
     private:
         double amount;

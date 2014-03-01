@@ -1,6 +1,9 @@
 #ifndef COLOR_H
 #define COLOR_H
 
+/**
+ * Color - A simple wrapper around RGB/HSV values
+ */
 class Color {
     private:
         int r;
@@ -11,6 +14,13 @@ class Color {
         double s;
         double v;
 
+        /**
+         * boundedVal() - constrains a value between lower and upper bound
+         * @val: The value to be constrained
+         * @lbound: The lower bound
+         * @ubound: The upper bound
+         * Return: Either val, lbound or ubound
+         */
         template <typename T>
         T boundedVal(T val, T lbound, T ubound) {
             if(val < lbound) {
@@ -24,45 +34,99 @@ class Color {
             }
         }
 
+        /**
+         * boundedRGB() - constrains an arbitary R/G/B value (0-255)
+         */
         int boundedRGB(int);
+
+        /**
+         * boundedH() - constrains an arbitary hue value (0-360)
+         */
         double boundedH(double);
+
+        /**
+         * boundedSV() - constrains an arbitary saturation/value value (0-1)
+         */
         double boundedSV(double);
+
+        /**
+         * updateHSV() - updates the HSV values to reflect the current RGB values
+         *
+         * This function has to be called every time the RGB values are changed
+         */
         void updateHSV();
+
+        /**
+         * updateRGB() - updates the RGB values to reflect the current HSV values
+         *
+         * This function has to be called every time the HSV values are changed
+         */
         void updateRGB();
     public:
-        Color(int, int, int);
+        /**
+         * Color() - constructs a new Color from RGB values
+         * @r: red value
+         * @g: green value
+         * @b: blue value
+         */
+        Color(int r, int g, int b);
 
-        // RGB functions
+        /**
+         * RGB getters
+         */
         int getR();
         int getG();
         int getB();
 
-        void setR(int);
-        void setG(int);
-        void setB(int);
+        /**
+         * RGB setters
+         */
+        void setR(int r);
+        void setG(int g);
+        void setB(int b);
+        void setRGB(int r, int g, int b);
 
-        void setRGB(int, int, int);
+        /**
+         * RGB increment functions
+         *
+         * Increments the R/G/B value by the specified amount
+         * It is capped at 0 and 255 respectively
+         */
+        void incR(int r);
+        void incG(int g);
+        void incB(int b);
 
-        void incR(int);
-        void incG(int);
-        void incB(int);
-
-        // HSV functions
+        /*
+         * HSV getters
+         */
         double getH();
         double getS();
         double getV();
 
-        void setH(double);
-        void setS(double);
-        void setV(double);
+        /*
+         * HSV setters
+         */
+        void setH(double h);
+        void setS(double s);
+        void setV(double v);
+        void setHSV(double h, double s, double v);
 
-        void setHSV(double, double, double);
-
+        /**
+         * HSV increment functions
+         *
+         * Increments the H/S/V value by the specified amount
+         * H is capped at 0/360
+         * S/V are capped at 0/1
+         */
         void incH(double);
         void incS(double);
         void incV(double);
 
-        void cycleH(double);
+        /**
+         * cycleH - increments the hue value wraps around after 0/360
+         * @h: the amount hue should be incremented
+         */
+        void cycleH(double h);
 
         bool operator== (const Color &other);
         bool operator!= (const Color &other);

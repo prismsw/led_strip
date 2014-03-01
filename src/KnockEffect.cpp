@@ -12,12 +12,17 @@ void KnockEffect::nextColor(Color* current) {
     int val = analogRead(KNOCK_PIN);
     long time = millis();
 
-    if(time - lastKnock > knockLength) {
+    // If the time that passed since the last knock is greater than our waiting time
+    if((time - lastKnock) > knockLength) {
+        // We only care if the value from the knock sensor exceeds the treshold
         if(val >= treshold) {
+            // If the time that passed since the end of the last knock exceeds the double knock time
             if(((time - lastKnock) - knockLength) <= doubleKnockTime) {
+                // Set to black
                 current->setV(0);
             }
             else {
+                // If the current color is black, set it to red
                 if(current->getV() == 0) {
                     current->setRGB(255,0,0);
                 }
@@ -26,6 +31,7 @@ void KnockEffect::nextColor(Color* current) {
                 }
             }
 
+            // Update the time of the last knock
             lastKnock = time;
         }
     }

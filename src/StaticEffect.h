@@ -4,6 +4,9 @@
 #include "Color.h"
 #include "Effect.h"
 
+/**
+ * StaticEffect - an effect that simply does nothing
+ */
 class StaticEffect : public Effect {
     public:
         StaticEffect();

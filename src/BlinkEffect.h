@@ -4,6 +4,9 @@
 #include "Color.h"
 #include "TimedEffect.h"
 
+/**
+ * BlinKEffect - flashes between the color and black
+ */
 class BlinkEffect : public TimedEffect {
     private:
         Color* color = 0;

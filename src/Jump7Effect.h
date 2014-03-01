@@ -4,6 +4,9 @@
 #include "Color.h"
 #include "TimedEffect.h"
 
+/**
+ * Jump7Effect - switches between 7 fixed colors without gradual fading
+ */
 class Jump7Effect : public TimedEffect {
     private:
         int index;
