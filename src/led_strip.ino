@@ -81,42 +81,91 @@ void incSpeed(double val) {
 
 void handleSerial() {
     while(Serial.available() > 0) {
-        String cmd = Serial.readStringUntil(' ');
+        byte buffer[4];
+        Serial.readBytes((char*)buffer,4);
+        
+        byte action = buffer[0];
 
-        if(cmd == "rgb") {
-            color->setR(Serial.parseInt());
-            color->setG(Serial.parseInt());
-            color->setB(Serial.parseInt());
+        switch(action) {
+        case 0:
+            // RGB
+        {
+            int r = buffer[1];
+            int g = buffer[2];
+            int b = buffer[3];
+
+            color->setRGB(r,g,b);
         }
-        else if(cmd == "fade") {
+            break;
+        case 1:
+            // HSV
+        {
+            int h = buffer[1] / 255.0 * 360.0;
+            int s = buffer[2] / 255.0;
+            int v = buffer[3] / 255.0;
+            
+            color->setHSV(h,s,v);
         }
-        else if(cmd == "nofade") {
+            break;
+        case 2:
+            // Mode
+        {
+            byte mode = buffer[1];
+            // Scale speed from 0-255 to 0.1-8.0
+            double speed = 0.1 + buffer[2] / 255.0 * 7.9;
+
+            switch(mode) {
+            case 0:
+                delete effect;
+                effect = new StaticEffect();
+            case 1:
+                delete effect;
+                effect = new BlinkEffect(1000 * 1/speed);
+                break;
+            case 2:
+                delete effect;
+                effect = new KnockEffect(60.0);
+                break;
+            case 3:
+                delete effect;
+                effect = new Jump7Effect(1000 * 1/speed);
+                break;
+            case 4:
+                delete effect;
+                effect = new FadeEffect(0.1 * speed, 1);
+                break;
+            case 5:
+                delete effect;
+                effect = new FadeEffect(0.01 * speed, 1);
+                break;
+            }
         }
-        else if(cmd == "hsv") {
-            color->setH(Serial.parseFloat());
-            color->setS(Serial.parseFloat());
-            color->setV(Serial.parseFloat());
+            break;
+        case 10:
+            // State
+        {
+            byte format = buffer[1];
+            byte outBuffer[4];
+            outBuffer[0] = format;
+
+            switch(format) {
+            case 0:
+                // RGB
+                outBuffer[1] = color->getR();
+                outBuffer[2] = color->getG();
+                outBuffer[3] = color->getB();
+                break;
+            case 1:
+                // HSV
+                outBuffer[1] = color->getH() / 360.0 * 255;
+                outBuffer[2] = color->getG() * 255;
+                outBuffer[3] = color->getB() * 255;
+                break;
+            }
+            Serial.write(outBuffer, 4);
         }
-        else if(cmd == "h") {
-            color->setH(Serial.parseFloat());
+            break;
         }
-        else if(cmd == "s") {
-            color->setS(Serial.parseFloat());
-        }
-        else if(cmd == "v") {
-            color->setV(Serial.parseFloat());
-        }
-        else if(cmd == "print") {
-            Serial.println(color->getR());
-            Serial.println(color->getG());
-            Serial.println(color->getB());
-            Serial.println("");
-        }
-        else {
-            Serial.println("Invalid command: " + cmd);
-            return;
-        }
-        Serial.println(cmd);
     }
 }
 
