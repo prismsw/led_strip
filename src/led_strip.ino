@@ -135,104 +135,119 @@ void handleIR() {
     }
 }
 
+void setStaticRGB(int r, int g, int b) {
+    delete effect;
+    effect = new StaticEffect();
+
+    color->setRGB(r, g, b);
+}
+
 void switchIRVal(int irval) {
     // I am so sorry...
     switch(irval) {
         case 0xFF3AC5:
             // br_up
-            color->incV(0.07);
+            color->incV(0.10);
             break;
         case 0xFFBA45:
             // br_down
-            color->incV(-0.07);
+            if(color->getV() <= 0.05) {
+                color->incV(-0.01);
+            }
+            else if(color->getV() <= 0.1) {
+                color->incV(-0.05);
+            }
+            else {
+                color->incV(-0.10);
+            }
             break;
         case 0xFF827D:
             // next
             color->cycleH(60.0);
             break;
         case 0xFF02FD:
-            color->setRGB(0,0,0);
+            setStaticRGB(0,0,0);
             // power
             break;
         case 0xFF1AE5:
             // red
-            color->setRGB(255,0,0);
+            setStaticRGB(255,0,0);
             break;
         case 0xFF9A65:
             // green
-            color->setRGB(0,255,0);
+            setStaticRGB(0,255,0);
             break;
         case 0xFFA25D:
             // blue
-            color->setRGB(0,0,255);
+            setStaticRGB(0,0,255);
             break;
         case 0xFF22DD:
             // white
-            color->setRGB(255,255,255);
+            setStaticRGB(255,255,255);
             break;
         case 0xFF2AD5:
             // orange
-            color->setRGB(255,20,0);
+            setStaticRGB(255,20,0);
             break;
         case 0xFFAA55:
             // light green
-            color->setRGB(0,255,100);
+            setStaticRGB(0,255,100);
             break;
         case 0xFF926D:
             // navy blue
-            color->setRGB(0,100,255);
+            setStaticRGB(0,100,255);
             break;
         case 0xFF12ED:
             // skin1?
-            color->setRGB(255,50,50);
+            setStaticRGB(255,50,50);
             break;
         case 0xFF0AF5:
             // light orange
-            color->setRGB(255,50,0);
+            setStaticRGB(255,50,0);
             break;
         case 0xFF8A75:
             // light blue
-            color->setRGB(0,210,255);
+            setStaticRGB(0,210,255);
             break;
         case 0xFFB24D:
             // dark purple
-            color->setRGB(140,0,255);
+            setStaticRGB(140,0,255);
             break;
         case 0xFF32CD:
             // better white
-            color->setRGB(255,200,140);
+            setStaticRGB(255,200,140);
             break;
         case 0xFF38C7:
             // dark orange
-            color->setRGB(64,5,0);
+            setStaticRGB(64,5,0);
             break;
         case 0xFFB847:
             // ocean blue
-            color->setRGB(0,190,180);
+            setStaticRGB(0,190,180);
             break;
         case 0xFF7887:
             // pink
-            color->setRGB(255,0,215);
+            setStaticRGB(255,0,215);
             break;
         case 0xFFF807:
             // sky blue
-            color->setRGB(0,255,255);
+            setStaticRGB(0,255,255);
             break;
         case 0xFF18E7:
             // yellow
-            color->setRGB(255,100,0);
+            setStaticRGB(255,100,0);
             break;
         case 0xFF9867:
             // azur
-            color->setRGB(0,127,255);
+            setStaticRGB(0,127,255);
             break;
         case 0xFF58A7:
             // dark pink
-            color->setRGB(255,0,120);
+            setStaticRGB(255,0,120);
             break;
         case 0xFFD827:
             // whatever blue
-            color->setRGB(0,220,255);
+            setStaticRGB(0,220,255);
             break;
         case 0xFF28D7:
             // r_up
