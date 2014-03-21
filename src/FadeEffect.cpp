@@ -8,3 +8,11 @@ FadeEffect::FadeEffect(double amount, int interval):TimedEffect(interval) {
 void FadeEffect::tick(Color* current) {
     current->cycleH(amount);
 }
+
+void FadeEffect::setSpeed(double speed) {
+    this->interval = 0.1 * speed;
+}
+
+unsigned char FadeEffect::id() {
+    return 2;
+}

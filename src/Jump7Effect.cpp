@@ -15,3 +15,7 @@ void Jump7Effect::tick(Color* current) {
     *current = *colors[index];
     index = (index + 1) % 7;
 }
+
+unsigned char Jump7Effect::id() {
+    return 4;
+}

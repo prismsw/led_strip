@@ -14,6 +14,8 @@ class FadeEffect : public TimedEffect {
         virtual void tick(Color* current);
     public:
         FadeEffect(double amount, int interval);
+        virtual void setSpeed(double speed);
+        virtual unsigned char id();
 };
 
 #endif

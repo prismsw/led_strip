@@ -11,3 +11,7 @@ void Jump3Effect::tick(Color* current) {
     *current = *colors[index];
     index = (index + 1) % 3;
 }
+
+unsigned char Jump3Effect::id() {
+    return 3;
+}

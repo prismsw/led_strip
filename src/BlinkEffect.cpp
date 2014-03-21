@@ -24,3 +24,7 @@ void BlinkEffect::tick(Color* current) {
         *current = *black;
     }
 }
+
+unsigned char BlinkEffect::id() {
+    return 1;
+}

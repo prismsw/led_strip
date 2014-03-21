@@ -25,6 +25,8 @@ class KnockEffect : public Effect {
          */
         KnockEffect(double increment, int treshold=5, int knockLength=100, int doubleKnockTime=200);
         virtual void nextColor(Color* current);
+        virtual void setSpeed(double speed);
+        virtual unsigned char id();
 };
 
 #endif

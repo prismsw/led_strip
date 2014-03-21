@@ -17,6 +17,7 @@ class BlinkEffect : public TimedEffect {
         virtual void tick(Color* current);
     public:
         BlinkEffect(int interval);
+        virtual unsigned char id();
 };
 
 #endif

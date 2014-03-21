@@ -9,11 +9,11 @@
  */
 class TimedEffect : public Effect {
     private:
-        int interval;
         long lastTick;
         
         bool shouldTick(long time);
     protected:
+        int interval;
         /**
          * tick() - abstract function that executes arbitary code once every tick
          * @current: The current color
@@ -27,5 +27,7 @@ class TimedEffect : public Effect {
         virtual ~TimedEffect() {};
 
         virtual void nextColor(Color* current);
+        virtual void setSpeed(double speed);
+        virtual unsigned char id() = 0;
 };
 #endif

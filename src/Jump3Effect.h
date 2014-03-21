@@ -16,5 +16,6 @@ class Jump3Effect : public TimedEffect {
 
     public:
         Jump3Effect(int interval);
+        virtual unsigned char id();
 };
 #endif

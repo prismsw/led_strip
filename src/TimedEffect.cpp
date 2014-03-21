@@ -21,3 +21,7 @@ void TimedEffect::tick(Color* current) {
 bool TimedEffect::shouldTick(long time) {
     return (time - lastTick) > interval;
 }
+
+void TimedEffect::setSpeed(double speed) {
+    this->interval = 1000 * 1/speed;
+}

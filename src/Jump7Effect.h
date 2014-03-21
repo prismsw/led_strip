@@ -16,5 +16,6 @@ class Jump7Effect : public TimedEffect {
 
     public:
         Jump7Effect(int interval);
+        virtual unsigned char id();
 };
 #endif

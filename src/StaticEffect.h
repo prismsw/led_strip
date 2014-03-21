@@ -12,6 +12,8 @@ class StaticEffect : public Effect {
         StaticEffect();
 
         virtual void nextColor(Color* current);
+        virtual void setSpeed(double speed);
+        virtual unsigned char id();
 };
 
 #endif

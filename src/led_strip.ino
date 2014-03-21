@@ -5,8 +5,11 @@
 #include "FadeEffect.h"
 #include "BlinkEffect.h"
 #include "KnockEffect.h"
+#include "Jump3Effect.h"
 #include "Jump7Effect.h"
 #include <IRremote.h>
+
+#define API_BUFFER_LENGTH 8
 
 Color* color = new Color(0, 0, 0);
 
@@ -76,13 +79,15 @@ void incSpeed(double val) {
     else if(speed >= 8.0) {
         speed = 8.0;
     }
+
+    effect->setSpeed(speed);
 }
 
 
 void handleSerial() {
     while(Serial.available() > 0) {
-        byte buffer[4];
-        Serial.readBytes((char*)buffer,4);
+        byte buffer[API_BUFFER_LENGTH];
+        Serial.readBytes((char*)buffer,API_BUFFER_LENGTH);
         
         byte action = buffer[0];
 
@@ -94,7 +99,7 @@ void handleSerial() {
             int g = buffer[2];
             int b = buffer[3];
 
-            color->setRGB(r,g,b);
+            setStaticRGB(r,g,b);
         }
             break;
         case 1:
@@ -111,8 +116,6 @@ void handleSerial() {
             // Mode
         {
             byte mode = buffer[1];
-            // Scale speed from 0-255 to 0.1-8.0
-            double speed = 0.1 + buffer[2] / 255.0 * 7.9;
 
             switch(mode) {
             case 0:
@@ -124,45 +127,55 @@ void handleSerial() {
                 break;
             case 2:
                 delete effect;
-                effect = new KnockEffect(60.0);
+                effect = new FadeEffect(0.1 * speed, 1);
                 break;
             case 3:
                 delete effect;
-                effect = new Jump7Effect(1000 * 1/speed);
+                effect = new Jump3Effect(1000 * 1/speed);
                 break;
             case 4:
                 delete effect;
-                effect = new FadeEffect(0.1 * speed, 1);
+                effect = new Jump7Effect(1000 * 1/speed);
                 break;
             case 5:
                 delete effect;
-                effect = new FadeEffect(0.01 * speed, 1);
+                effect = new KnockEffect(60.0);
                 break;
             }
         }
             break;
+        case 3:
+            // Speed
+        {
+            // Scale speed from 0-255 to 0.1-8.0
+            speed = 0.1 + buffer[1] / 255.0 * 7.9;
+            effect->setSpeed(speed);
+        }
+
         case 10:
             // State
         {
-            byte format = buffer[1];
-            byte outBuffer[4];
-            outBuffer[0] = format;
+            //   0    1  2  3    4    5      6-7
+            // [type][r][g][b][speed][mode]reserved
+            byte outBuffer[API_BUFFER_LENGTH];
+            outBuffer[0] = 10;
 
-            switch(format) {
-            case 0:
-                // RGB
-                outBuffer[1] = color->getR();
-                outBuffer[2] = color->getG();
-                outBuffer[3] = color->getB();
-                break;
-            case 1:
-                // HSV
-                outBuffer[1] = color->getH() / 360.0 * 255;
-                outBuffer[2] = color->getG() * 255;
-                outBuffer[3] = color->getB() * 255;
-                break;
-            }
-            Serial.write(outBuffer, 4);
+            outBuffer[1] = color->getR();
+            outBuffer[2] = color->getG();
+            outBuffer[3] = color->getB();
+
+            outBuffer[4] = (unsigned char) ((speed-0.1) / 7.9 * 255);
+
+            /**
+             * Static   = 0
+             * Blink    = 1
+             * Fade     = 2
+             * Jump3    = 3
+             * Jump7    = 4
+             * Knock    = 5
+             */
+            outBuffer[5] = effect->id();
+            Serial.write(outBuffer, API_BUFFER_LENGTH);
         }
             break;
         }

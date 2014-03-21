@@ -36,3 +36,11 @@ void KnockEffect::nextColor(Color* current) {
         }
     }
 }
+
+void KnockEffect::setSpeed(double speed) {
+    return;
+}
+
+unsigned char KnockEffect::id() {
+    return 5;
+}
