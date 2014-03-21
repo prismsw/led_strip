@@ -157,7 +157,7 @@ void handleSerial() {
         {
             //   0    1  2  3    4    5      6-7
             // [type][r][g][b][speed][mode]reserved
-            byte outBuffer[API_BUFFER_LENGTH];
+            byte outBuffer[API_BUFFER_LENGTH] = {0};
             outBuffer[0] = 10;
 
             outBuffer[1] = color->getR();
@@ -184,7 +184,6 @@ void handleSerial() {
 
 void handleIR() {
     if(irrecv.decode(&irresults)) {
-        Serial.println(irresults.value, HEX);
         int val = irresults.value;
         if(val == 0xFFFFFFFF) {
             val = lastResult;
