@@ -121,6 +121,7 @@ void handleSerial() {
             case 0:
                 delete effect;
                 effect = new StaticEffect();
+                break;
             case 1:
                 delete effect;
                 effect = new BlinkEffect(1000 * 1/speed);
@@ -142,14 +143,15 @@ void handleSerial() {
                 effect = new KnockEffect(60.0);
                 break;
             }
-        }
             break;
+        }
         case 3:
             // Speed
         {
             // Scale speed from 0-255 to 0.1-8.0
             speed = 0.1 + buffer[1] / 255.0 * 7.9;
             effect->setSpeed(speed);
+            break;
         }
 
         case 10:
@@ -176,8 +178,8 @@ void handleSerial() {
              */
             outBuffer[5] = effect->id();
             Serial.write(outBuffer, API_BUFFER_LENGTH);
-        }
             break;
+        }
         }
     }
 }
