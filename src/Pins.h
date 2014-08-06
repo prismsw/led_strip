@@ -12,7 +12,7 @@
  */
 #define R_PIN 2
 #define G_PIN 3
-#define B_PIN 4
+#define B_PIN 5
 
 /**
  * The pin on which the heartbeat will be shown
