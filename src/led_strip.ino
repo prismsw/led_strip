@@ -7,6 +7,8 @@
 #include "KnockEffect.h"
 #include "Jump3Effect.h"
 #include "Jump7Effect.h"
+#include "TripwireEffect.h"
+
 #include <IRremote.h>
 
 #define API_BUFFER_LENGTH 8
@@ -27,7 +29,6 @@ IRrecv irrecv(IR_PIN);
 decode_results irresults;
 int lastResult = 0x0;
 
-
 void setup() {
     pinMode(R_PIN, OUTPUT);
     pinMode(G_PIN, OUTPUT);
@@ -38,6 +39,9 @@ void setup() {
     Serial.begin(9600);
 
     irrecv.enableIRIn();
+
+    delete effect;
+    effect = new TripwireEffect();
 }
 
 void loop() {
