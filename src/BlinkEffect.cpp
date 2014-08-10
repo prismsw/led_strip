@@ -7,6 +7,10 @@ bool BlinkEffect::isOff(Color* color) {
     return color->getV() == 0;
 }
 
+void BlinkEffect::setSpeed(double speed) {
+    TimedEffect::setSpeed(1000 * 1/speed);
+}
+
 void BlinkEffect::tick(Color* current) {
     // The first time we have to set the color we are working with
     if(color == 0) {

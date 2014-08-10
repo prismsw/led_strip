@@ -16,6 +16,10 @@ void Jump7Effect::tick(Color* current) {
     index = (index + 1) % 7;
 }
 
+void Jump7Effect::setSpeed(double speed) {
+    TimedEffect::setSpeed(1000 * 1/speed);
+}
+
 unsigned char Jump7Effect::id() {
     return 4;
 }

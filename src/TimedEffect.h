@@ -3,17 +3,16 @@
 
 #include "Color.h"
 #include "Effect.h"
+#include "Timer.h"
 
 /**
  * TimedEffect - abstract class that executes a tick every x ms
  */
 class TimedEffect : public Effect {
     private:
-        long lastTick;
+        Timer *timer;
         
-        bool shouldTick(long time);
     protected:
-        int interval;
         /**
          * tick() - abstract function that executes arbitary code once every tick
          * @current: The current color
@@ -24,7 +23,7 @@ class TimedEffect : public Effect {
 
     public:
         TimedEffect(int interval);
-        virtual ~TimedEffect() {};
+        virtual ~TimedEffect();
 
         virtual void nextColor(Color* current);
         virtual void setSpeed(double speed);

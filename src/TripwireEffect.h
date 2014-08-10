@@ -4,6 +4,7 @@
 #include "Color.h"
 #include "Effect.h"
 #include "Pins.h"
+#include "Timer.h"
 
 #include <NewPing.h>
 
@@ -13,12 +14,12 @@
 class TripwireEffect : public Effect {
     private:
         NewPing *sonar;
+        Timer *usTimer;
 
         int treshold;
         int interval;
         int lockTime;
 
-        long lastCheck;
         long lastTripped;
         bool isTripped = false;
 

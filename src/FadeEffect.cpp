@@ -10,7 +10,7 @@ void FadeEffect::tick(Color* current) {
 }
 
 void FadeEffect::setSpeed(double speed) {
-    this->interval = 0.1 * speed;
+    TimedEffect::setSpeed(100 * 1/speed);
 }
 
 unsigned char FadeEffect::id() {

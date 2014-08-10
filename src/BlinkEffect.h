@@ -15,6 +15,7 @@ class BlinkEffect : public TimedEffect {
         bool isOff(Color* color);
     protected:
         virtual void tick(Color* current);
+        virtual void setSpeed(double speed);
     public:
         BlinkEffect(int interval);
         virtual unsigned char id();

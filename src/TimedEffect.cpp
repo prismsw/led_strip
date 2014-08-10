@@ -2,15 +2,16 @@
 #include <Arduino.h>
 
 TimedEffect::TimedEffect(int interval) {
-    this->interval = interval;
-    this->lastTick = millis();
+    this->timer = new Timer(interval);
+}
+
+TimedEffect::~TimedEffect() {
+    delete timer;
 }
 
 void TimedEffect::nextColor(Color* current) {
-    long time = millis();
-    if(shouldTick(time)) {
+    if(timer->tick()) {
         tick(current);
-        lastTick = time;
     }
 }
 
@@ -18,10 +19,6 @@ void TimedEffect::tick(Color* current) {
     return;
 }
 
-bool TimedEffect::shouldTick(long time) {
-    return (time - lastTick) > interval;
-}
-
 void TimedEffect::setSpeed(double speed) {
-    this->interval = 1000 * 1/speed;
+    this->timer->setInterval(speed);
 }
