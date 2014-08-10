@@ -1,0 +1,42 @@
+8 Byte per packet
+[0] [1] [2] [3] [4] [5] [6] [7] [8]
+
+Arduino->Client
+-----------------
+[type] [...]
+
+Where type identifies the kind of message
+    Reply to action: equivalent to the action byte
+    Otherwise: Free to choose, but unique, must not clash with action
+
+Client->Arduino
+-----------------
+[action] [...]
+
+[action]
+    0: Set RGB color
+        [action_rgb] [r] [g] [b] [...]
+
+        r,g,b interpreted as integer between 0-255
+    
+    1: Set HSV color
+        [action_hsv] [h] [s] [v] [...]
+
+        h,s,v interpreted as integer between 0-255, afterwards normalized to HSV range.
+            h: 0 - 360
+            s: 0 - 1
+            v: 0 - 1
+
+    2: Set mode
+        [action_mode] [mode] [...]
+
+    3: Set speed
+        [action_speed] [speed] [...]
+        speed interpreted as integer between 0-255, then scaled to useable speed values (currently linear)
+
+    10: Get state
+        Replies with an 8 byte packet containing the current state
+        The encoding of the values is equivalent to the encoding specified above
+
+          0     1   2   3     4      5     6,7
+        [type] [r] [g] [b] [speed] [mode] [...]
