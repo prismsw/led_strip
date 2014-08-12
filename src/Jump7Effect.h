@@ -12,11 +12,10 @@ class Jump7Effect : public TimedEffect {
         int index;
         Color* colors[7];
     protected:
-        virtual void tick(Color* current);
-        virtual void setSpeed(double speed);
-
+        virtual void tick();
+        virtual int speedToInterval(double speed);
     public:
-        Jump7Effect(int interval);
+        Jump7Effect(double speed);
         virtual unsigned char id();
 };
 #endif

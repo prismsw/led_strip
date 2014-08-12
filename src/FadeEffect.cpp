@@ -1,16 +1,17 @@
 #include "FadeEffect.h"
 #include <Arduino.h>
 
-FadeEffect::FadeEffect(double amount, int interval):TimedEffect(interval) {
+FadeEffect::FadeEffect(Color color, double speed, double amount):TimedEffect(color, speed) {
     this->amount = amount;
+    this->timer->setInterval(speedToInterval(speed));
 }
 
-void FadeEffect::tick(Color* current) {
-    current->cycleH(amount);
+void FadeEffect::tick() {
+    currentColor->cycleH(amount);
 }
 
-void FadeEffect::setSpeed(double speed) {
-    TimedEffect::setSpeed(100 * 1/speed);
+int FadeEffect::speedToInterval(double speed) {
+    return 100/speed;
 }
 
 unsigned char FadeEffect::id() {

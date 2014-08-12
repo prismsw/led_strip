@@ -1,10 +1,8 @@
 #include "StaticEffect.h"
 
-StaticEffect::StaticEffect() {
-    return;
-}
+StaticEffect::StaticEffect(Color color):Effect(color) {}
 
-void StaticEffect::nextColor(Color* current) {
+void StaticEffect::update() {
     return;
 }
 

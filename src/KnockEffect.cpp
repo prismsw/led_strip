@@ -1,14 +1,14 @@
 #include "KnockEffect.h"
 #include "Pins.h"
 
-KnockEffect::KnockEffect(double increment, int treshold, int knockLength, int doubleKnockTime) {
+KnockEffect::KnockEffect(Color color, double increment, int treshold, int knockLength, int doubleKnockTime):Effect(color) {
     this->increment = increment;
     this->treshold = treshold;
     this->knockLength = knockLength;
     this->doubleKnockTime = doubleKnockTime;
 }
 
-void KnockEffect::nextColor(Color* current) {
+void KnockEffect::update() {
     int val = analogRead(KNOCK_PIN);
     long time = millis();
 
@@ -19,15 +19,15 @@ void KnockEffect::nextColor(Color* current) {
             // If the time that passed since the end of the last knock exceeds the double knock time
             if(((time - lastKnock) - knockLength) <= doubleKnockTime) {
                 // Set to black
-                current->setV(0);
+                currentColor->setV(0);
             }
             else {
                 // If the current color is black, set it to red
-                if(current->getV() == 0) {
-                    current->setRGB(255,0,0);
+                if(currentColor->getV() == 0) {
+                    currentColor->setRGB(255,0,0);
                 }
                 else {
-                    current->cycleH(increment);
+                    currentColor->cycleH(increment);
                 }
             }
 

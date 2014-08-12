@@ -16,6 +16,9 @@ class TripwireEffect : public Effect {
         NewPing *sonar;
         Timer *usTimer;
 
+        Color* onColor;
+        Color* black;
+
         int treshold;
         int interval;
         int lockTime;
@@ -24,10 +27,10 @@ class TripwireEffect : public Effect {
         bool isTripped = false;
 
     public:
-        TripwireEffect(int treshold=120, int interval=100, int lockTime=500);
+        TripwireEffect(Color color, int treshold=120, int interval=100, int lockTime=500);
         ~TripwireEffect();
 
-        virtual void nextColor(Color* current);
+        virtual void update();
         virtual void setSpeed(double speed);
         virtual unsigned char id();
 };

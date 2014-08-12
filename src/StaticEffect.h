@@ -9,9 +9,9 @@
  */
 class StaticEffect : public Effect {
     public:
-        StaticEffect();
+        StaticEffect(Color color);
 
-        virtual void nextColor(Color* current);
+        virtual void update();
         virtual void setSpeed(double speed);
         virtual unsigned char id();
 };

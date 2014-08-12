@@ -9,24 +9,24 @@
  * TimedEffect - abstract class that executes a tick every x ms
  */
 class TimedEffect : public Effect {
-    private:
-        Timer *timer;
-        
     protected:
+        Timer *timer;
         /**
          * tick() - abstract function that executes arbitary code once every tick
          * @current: The current color
-         *
-         * This function is supposed to be implemented by the subclasses, similar to nextColor
          */
-        virtual void tick(Color* current);
+        virtual void tick();
+        virtual int speedToInterval(double speed);
 
     public:
-        TimedEffect(int interval);
+        TimedEffect(double speed);
+        TimedEffect(Color color, double speed);
         virtual ~TimedEffect();
 
-        virtual void nextColor(Color* current);
+        virtual void update();
+
         virtual void setSpeed(double speed);
+
         virtual unsigned char id() = 0;
 };
 #endif

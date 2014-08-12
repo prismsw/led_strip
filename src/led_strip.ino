@@ -13,15 +13,13 @@
 
 #define API_BUFFER_LENGTH 8
 
-Color* color = new Color(0, 0, 0);
-
 // Heartbeat
 int pulse = 1000;
 int heartState = LOW;
 long lastBeat = 0;
 
 // Effects
-Effect* effect = new StaticEffect();
+Effect* effect = 0;
 double speed = 1.0;
 
 // IR
@@ -39,15 +37,14 @@ void setup() {
     Serial.begin(9600);
 
     irrecv.enableIRIn();
-
-    delete effect;
-    effect = new TripwireEffect();
+    effect = new StaticEffect(Color(0,0,0));
 }
 
 void loop() {
     handleIR();
     handleSerial();
-    setColor(color);
+    effect->update();
+    setColor(effect->getColor());
 
     digitalWrite(HEART_PIN, heartState);
 
@@ -55,8 +52,6 @@ void loop() {
         blink(&heartState);
         lastBeat = millis();
     }
-
-    effect->nextColor(color);
 }
 
 void setColor(Color* c) {
@@ -89,6 +84,8 @@ void incSpeed(double val) {
 
 
 void handleSerial() {
+    Color* color = effect->getColor();
+
     while(Serial.available() > 0) {
         byte buffer[API_BUFFER_LENGTH];
         Serial.readBytes((char*)buffer,API_BUFFER_LENGTH);
@@ -123,28 +120,22 @@ void handleSerial() {
 
             switch(mode) {
             case 0:
-                delete effect;
-                effect = new StaticEffect();
+                changeEffect(new StaticEffect(*color));
                 break;
             case 1:
-                delete effect;
-                effect = new BlinkEffect(1000 * 1/speed);
+                changeEffect(new BlinkEffect(*color, speed));
                 break;
             case 2:
-                delete effect;
-                effect = new FadeEffect(0.1 * speed, 1);
+                changeEffect(new FadeEffect(*color, speed, 1));
                 break;
             case 3:
-                delete effect;
-                effect = new Jump3Effect(1000 * 1/speed);
+                changeEffect(new Jump3Effect(speed));
                 break;
             case 4:
-                delete effect;
-                effect = new Jump7Effect(1000 * 1/speed);
+                changeEffect(new Jump7Effect(speed));
                 break;
             case 5:
-                delete effect;
-                effect = new KnockEffect(60.0);
+                changeEffect(new KnockEffect(*color, 60.0));
                 break;
             }
             break;
@@ -188,28 +179,36 @@ void handleSerial() {
     }
 }
 
+void changeEffect(Effect* other) {
+    delete effect;
+    effect = other;
+}
+
 void handleIR() {
     if(irrecv.decode(&irresults)) {
         int val = irresults.value;
+
         if(val == 0xFFFFFFFF) {
-            val = lastResult;
+            switchIRVal(lastResult, true);
         }
         else {
             lastResult = val;
+            switchIRVal(lastResult, false);
         }
-        switchIRVal(val);
+
         irrecv.resume();
     }
 }
 
 void setStaticRGB(int r, int g, int b) {
-    delete effect;
-    effect = new StaticEffect();
+    Color c = Color(r,g,b);
+    Effect* e = new StaticEffect(c);
 
-    color->setRGB(r, g, b);
+    changeEffect(e);
 }
 
-void switchIRVal(int irval) {
+void switchIRVal(int irval, bool repeat) {
+    Color* color = effect->getColor();
     // I am so sorry...
     switch(irval) {
         case 0xFF3AC5:
@@ -362,8 +361,7 @@ void switchIRVal(int irval) {
             break;
         case 0xFFF00F:
             // auto
-            delete effect;
-            effect = new StaticEffect();
+            changeEffect(new StaticEffect(*color));
             break;
         case 0xFF10EF:
             // h_down
@@ -379,28 +377,33 @@ void switchIRVal(int irval) {
             break;
         case 0xFFD02F:
             // flash
-            delete effect;
-            effect = new BlinkEffect(1000 * 1/speed);
+            if(!repeat) {
+                changeEffect(new BlinkEffect(*color, speed));
+            }
             break;
         case 0xFF20DF:
             // jump3
-            delete effect;
-            effect = new KnockEffect(60.0);
+            if(!repeat) {
+                changeEffect(new KnockEffect(*color, 60.0));
+            }
             break;
         case 0xFFA05F:
             // jump7
-            delete effect;
-            effect = new Jump7Effect(1000 * 1/speed);
+            if(!repeat) {
+                changeEffect(new TripwireEffect(*color));
+            }
             break;
         case 0xFF609F:
             // fade3
-            delete effect;
-            effect = new FadeEffect(0.1 * speed, 1);
+            if(!repeat) {
+                changeEffect(new FadeEffect(*color, speed, 1));
+            }
             break;
         case 0xFFE01F:
             // fade7
-            delete effect;
-            effect = new FadeEffect(0.01 * speed, 1);
+            if(!repeat) {
+                changeEffect(new FadeEffect(*color, 0.1 * speed, 1));
+            }
             break;
     }
 }

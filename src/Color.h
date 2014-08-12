@@ -86,6 +86,8 @@ class Color {
         void setB(int b);
         void setRGB(int r, int g, int b);
 
+        void setColor(Color& other);
+
         /**
          * RGB increment functions
          *

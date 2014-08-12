@@ -157,6 +157,16 @@ void Color::setRGB(int r, int g, int b) {
     updateHSV();
 }
 
+void Color::setColor(Color& other) {
+    this->r = other.getR();
+    this->g = other.getG();
+    this->b = other.getB();
+    
+    this->h = other.getH();
+    this->s = other.getS();
+    this->v = other.getV();
+}
+
 void Color::incR(int r) {
     this->r = boundedRGB(this->r + r);
     updateHSV();

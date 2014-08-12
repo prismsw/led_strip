@@ -1,31 +1,28 @@
 #include "BlinkEffect.h"
 #include <Arduino.h>
 
-BlinkEffect::BlinkEffect(int interval):TimedEffect(interval) {}
-
-bool BlinkEffect::isOff(Color* color) {
-    return color->getV() == 0;
+BlinkEffect::BlinkEffect(Color color, double speed):TimedEffect(color, speed) {
+    this->originalColor = new Color(color);
+    this->timer->setInterval(speedToInterval(speed));
 }
 
-void BlinkEffect::setSpeed(double speed) {
-    TimedEffect::setSpeed(1000 * 1/speed);
+BlinkEffect::~BlinkEffect() {
+    delete originalColor;
+    delete black;
 }
 
-void BlinkEffect::tick(Color* current) {
-    // The first time we have to set the color we are working with
-    if(color == 0) {
-        color = new Color(*current);
-    }
+int BlinkEffect::speedToInterval(double speed) {
+    return 1000/speed;
+}
 
-    if(isOff(current)) {
-        // Change the current (black) color to the stored one
-        *current = *color;
+void BlinkEffect::tick() {
+    off = !off;
+
+    if(off) {
+        *currentColor = *originalColor;
     }
     else {
-        // Store the current color and change the current one to black
-        delete color;
-        color = new Color(*current);
-        *current = *black;
+        *currentColor = *black;
     }
 }
 

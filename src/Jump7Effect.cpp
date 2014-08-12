@@ -1,6 +1,7 @@
 #include "Jump7Effect.h"
 
-Jump7Effect::Jump7Effect(int interval):TimedEffect(interval) {
+Jump7Effect::Jump7Effect(double speed):TimedEffect(speed) {
+    this->timer->setInterval(speedToInterval(speed));
     index = 0;
     colors[0] = new Color(255,0,0);
     colors[1] = new Color(255,20,0);
@@ -11,13 +12,13 @@ Jump7Effect::Jump7Effect(int interval):TimedEffect(interval) {
     colors[6] = new Color(255,0,120);
 };
 
-void Jump7Effect::tick(Color* current) {
-    *current = *colors[index];
+void Jump7Effect::tick() {
+    *currentColor = *colors[index];
     index = (index + 1) % 7;
 }
 
-void Jump7Effect::setSpeed(double speed) {
-    TimedEffect::setSpeed(1000 * 1/speed);
+int Jump7Effect::speedToInterval(double speed) {
+    return 1000/speed;
 }
 
 unsigned char Jump7Effect::id() {
