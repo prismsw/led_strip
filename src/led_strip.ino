@@ -137,6 +137,9 @@ void handleSerial() {
             case 5:
                 changeEffect(new KnockEffect(*color, 60.0));
                 break;
+            case 6:
+                changeEffect(new TripwireEffect(*color);
+                break;
             }
             break;
         }
