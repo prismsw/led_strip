@@ -173,6 +173,7 @@ void handleSerial() {
              * Jump3    = 3
              * Jump7    = 4
              * Knock    = 5
+             * Tripwire = 6
              */
             outBuffer[5] = effect->id();
             Serial.write(outBuffer, API_BUFFER_LENGTH);

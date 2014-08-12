@@ -27,7 +27,6 @@ void TripwireEffect::update() {
     if(usTimer->tick()) {
         if((millis() - lastTripped) > lockTime) {
             unsigned int distance = sonar->convert_cm(sonar->ping_median(3));
-            Serial.println(distance);
 
             if(distance > 0 && distance < treshold) {
                 lastTripped = millis();
