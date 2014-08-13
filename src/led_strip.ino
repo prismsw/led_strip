@@ -89,33 +89,31 @@ void handleSerial() {
     while(Serial.available() > 0) {
         byte buffer[API_BUFFER_LENGTH];
         Serial.readBytes((char*)buffer,API_BUFFER_LENGTH);
-        
+
+        if(!validCommand(buffer)) {
+            return;
+        }
+
         byte action = buffer[0];
 
-        switch(action) {
-        case 0:
+        if(action == 0) {
             // RGB
-        {
             int r = buffer[1];
             int g = buffer[2];
             int b = buffer[3];
 
             setStaticRGB(r,g,b);
         }
-            break;
-        case 1:
+        else if(action == 1) {
             // HSV
-        {
             int h = buffer[1] / 255.0 * 360.0;
             int s = buffer[2] / 255.0;
             int v = buffer[3] / 255.0;
             
             color->setHSV(h,s,v);
         }
-            break;
-        case 2:
+        else if(action == 2) {
             // Mode
-        {
             byte mode = buffer[1];
 
             switch(mode) {
@@ -141,20 +139,15 @@ void handleSerial() {
                 changeEffect(new TripwireEffect(*color));
                 break;
             }
-            break;
         }
-        case 3:
+        else if(action == 3) {
             // Speed
-        {
             // Scale speed from 0-255 to 0.1-8.0
             speed = 0.1 + buffer[1] / 255.0 * 7.9;
             effect->setSpeed(speed);
-            break;
         }
-
-        case 10:
+        else if(action == 10) {
             // State
-        {
             //   0    1  2  3    4    5      6-7
             // [type][r][g][b][speed][mode]reserved
             byte outBuffer[API_BUFFER_LENGTH] = {0};
@@ -176,11 +169,35 @@ void handleSerial() {
              * Tripwire = 6
              */
             outBuffer[5] = effect->id();
+            addChecksum(outBuffer);
             Serial.write(outBuffer, API_BUFFER_LENGTH);
-            break;
-        }
         }
     }
+}
+
+bool validCommand(byte cmd[]) {
+    byte sum = checksum(cmd);
+
+    if(sum == cmd[API_BUFFER_LENGTH-1]) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+byte checksum(byte cmd[]) {
+    byte sum = 0;
+
+    for(int i=0; i<API_BUFFER_LENGTH-2; i++) {
+        sum = sum + cmd[i];
+    }
+
+    return sum;
+}
+
+void addChecksum(byte cmd[]) {
+    cmd[API_BUFFER_LENGTH-1] = checksum(cmd);
 }
 
 void changeEffect(Effect* other) {
