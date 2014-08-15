@@ -2,14 +2,14 @@
 [0] [1] [2] [3] [4] [5] [6] [7]
 
 The final byte is always a checksum, sum of the other bytes mod 256
+The arduino sends a reply of the same length to every command
 
 Arduino->Client
 -----------------
 [type] [...]
 
 Where type identifies the kind of message
-    Reply to action: equivalent to the action byte
-    Otherwise: Free to choose, but unique, must not clash with action
+The type does not have to be equivalent to the command sent
 
 Client->Arduino
 -----------------

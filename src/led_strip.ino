@@ -103,6 +103,7 @@ void handleSerial() {
             int b = buffer[3];
 
             setStaticRGB(r,g,b);
+            Serial.write(buffer, API_BUFFER_LENGTH);
         }
         else if(action == 1) {
             // HSV
@@ -111,6 +112,7 @@ void handleSerial() {
             int v = buffer[3] / 255.0;
             
             color->setHSV(h,s,v);
+            Serial.write(buffer, API_BUFFER_LENGTH);
         }
         else if(action == 2) {
             // Mode
@@ -139,12 +141,14 @@ void handleSerial() {
                 changeEffect(new TripwireEffect(*color));
                 break;
             }
+            Serial.write(buffer, API_BUFFER_LENGTH);
         }
         else if(action == 3) {
             // Speed
             // Scale speed from 0-255 to 0.1-8.0
             speed = 0.1 + buffer[1] / 255.0 * 7.9;
             effect->setSpeed(speed);
+            Serial.write(buffer, API_BUFFER_LENGTH);
         }
         else if(action == 10) {
             // State
