@@ -9,15 +9,17 @@
  */
 class BlinkEffect : public TimedEffect {
     private:
-        bool off = false;
         Color* originalColor;
         Color* black = new Color(0,0,0);
+
+        bool off = false;
     protected:
         virtual void tick();
-    public:
-        BlinkEffect(Color color, double speed);
-        virtual ~BlinkEffect();
         virtual int speedToInterval(double speed);
+    public:
+        BlinkEffect(const Color& color, double speed);
+        virtual ~BlinkEffect();
+
         virtual unsigned char id();
 };
 

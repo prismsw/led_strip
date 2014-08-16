@@ -1,7 +1,7 @@
 #include "KnockEffect.h"
 #include "Pins.h"
 
-KnockEffect::KnockEffect(Color color, double increment, int treshold, int knockLength, int doubleKnockTime):Effect(color) {
+KnockEffect::KnockEffect(const Color& color, double increment, int treshold, int knockLength, int doubleKnockTime):Effect(color) {
     this->increment = increment;
     this->treshold = treshold;
     this->knockLength = knockLength;

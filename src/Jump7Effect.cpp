@@ -12,6 +12,10 @@ Jump7Effect::Jump7Effect(double speed):TimedEffect(speed) {
     colors[6] = new Color(255,0,120);
 };
 
+unsigned char Jump7Effect::id() {
+    return 4;
+}
+
 void Jump7Effect::tick() {
     *currentColor = *colors[index];
     index = (index + 1) % 7;
@@ -19,8 +23,4 @@ void Jump7Effect::tick() {
 
 int Jump7Effect::speedToInterval(double speed) {
     return 1000/speed;
-}
-
-unsigned char Jump7Effect::id() {
-    return 4;
 }

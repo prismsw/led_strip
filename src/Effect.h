@@ -11,11 +11,13 @@ class Effect {
         Color* currentColor;
     public:
         Effect();
-        Effect(Color& color);
+        Effect(const Color& color);
         virtual ~Effect();
+
         virtual void update() = 0;
+
         virtual Color* getColor();
-        virtual void setColor(Color& c);
+        virtual void setColor(const Color& c);
         virtual void setSpeed(double speed) = 0;
         virtual unsigned char id() = 0;
 };

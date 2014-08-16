@@ -1,7 +1,7 @@
 #include "BlinkEffect.h"
 #include <Arduino.h>
 
-BlinkEffect::BlinkEffect(Color color, double speed):TimedEffect(color, speed) {
+BlinkEffect::BlinkEffect(const Color& color, double speed):TimedEffect(color, speed) {
     this->originalColor = new Color(color);
     this->timer->setInterval(speedToInterval(speed));
 }
@@ -11,8 +11,8 @@ BlinkEffect::~BlinkEffect() {
     delete black;
 }
 
-int BlinkEffect::speedToInterval(double speed) {
-    return 1000/speed;
+unsigned char BlinkEffect::id() {
+    return 1;
 }
 
 void BlinkEffect::tick() {
@@ -26,6 +26,6 @@ void BlinkEffect::tick() {
     }
 }
 
-unsigned char BlinkEffect::id() {
-    return 1;
+int BlinkEffect::speedToInterval(double speed) {
+    return 1000/speed;
 }

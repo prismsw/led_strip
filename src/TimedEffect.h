@@ -11,6 +11,7 @@
 class TimedEffect : public Effect {
     protected:
         Timer *timer;
+
         /**
          * tick() - abstract function that executes arbitary code once every tick
          * @current: The current color
@@ -20,7 +21,7 @@ class TimedEffect : public Effect {
 
     public:
         TimedEffect(double speed);
-        TimedEffect(Color color, double speed);
+        TimedEffect(const Color& color, double speed);
         virtual ~TimedEffect();
 
         virtual void update();

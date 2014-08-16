@@ -4,7 +4,7 @@
 
 #include <Arduino.h>
 
-TripwireEffect::TripwireEffect(Color color, int treshold, int interval, int lockTime):Effect(color) {
+TripwireEffect::TripwireEffect(const Color& color, int treshold, int interval, int lockTime):Effect(color) {
     this->onColor = new Color(color);
     this->black = new Color(0,0,0);
 

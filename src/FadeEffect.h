@@ -12,9 +12,10 @@ class FadeEffect : public TimedEffect {
         double amount;
     protected:
         virtual void tick();
-    public:
-        FadeEffect(Color color, double speed, double amount);
         virtual int speedToInterval(double speed);
+    public:
+        FadeEffect(const Color& color, double speed, double amount);
+
         virtual unsigned char id();
 };
 

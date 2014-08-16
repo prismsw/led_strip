@@ -4,7 +4,11 @@ Effect::Effect() {
     this->currentColor = new Color(0,0,0);
 }
 
-Effect::Effect(Color& color) {
+Effect::~Effect() {
+    delete currentColor;
+}
+
+Effect::Effect(const Color& color) {
     currentColor = new Color(color);
 }
 
@@ -12,10 +16,6 @@ Color* Effect::getColor() {
     return currentColor;
 }
 
-void Effect::setColor(Color& c) {
-    currentColor = new Color(c);
-}
-
-Effect::~Effect() {
-    delete currentColor;
+void Effect::setColor(const Color& c) {
+    *currentColor = c;
 }

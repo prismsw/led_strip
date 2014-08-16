@@ -1,6 +1,6 @@
 #include "StaticEffect.h"
 
-StaticEffect::StaticEffect(Color color):Effect(color) {}
+StaticEffect::StaticEffect(const Color& color):Effect(color) {}
 
 void StaticEffect::update() {
     return;

@@ -9,10 +9,11 @@
  */
 class StaticEffect : public Effect {
     public:
-        StaticEffect(Color color);
+        StaticEffect(const Color& color);
 
         virtual void update();
         virtual void setSpeed(double speed);
+
         virtual unsigned char id();
 };
 

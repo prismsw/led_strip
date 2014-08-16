@@ -5,7 +5,7 @@ TimedEffect::TimedEffect(double speed):Effect() {
     this->timer = new Timer(speedToInterval(speed));
 }
 
-TimedEffect::TimedEffect(Color color, double speed):Effect(color) {
+TimedEffect::TimedEffect(const Color& color, double speed):Effect(color) {
     this->timer = new Timer(speedToInterval(speed));
 }
 

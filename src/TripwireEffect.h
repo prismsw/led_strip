@@ -27,11 +27,12 @@ class TripwireEffect : public Effect {
         bool isTripped = false;
 
     public:
-        TripwireEffect(Color color, int treshold=120, int interval=100, int lockTime=500);
+        TripwireEffect(const Color& color, int treshold=120, int interval=100, int lockTime=500);
         ~TripwireEffect();
 
         virtual void update();
         virtual void setSpeed(double speed);
+
         virtual unsigned char id();
 };
 

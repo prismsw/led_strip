@@ -14,7 +14,6 @@ class KnockEffect : public Effect {
         long lastKnock = 0;
         int knockLength;
         int doubleKnockTime;
-
     public:
         /**
          * KnockEffect() 
@@ -24,9 +23,11 @@ class KnockEffect : public Effect {
          * @knockLength: For how long other inputs will be ignored after a knock (ms)
          * @doubleKnockTime: For how long after a knock, another knock will be counted as a double knock (ms)
          */
-        KnockEffect(Color color, double increment=60, int treshold=5, int knockLength=100, int doubleKnockTime=200);
+        KnockEffect(const Color& color, double increment=60, int treshold=5, int knockLength=100, int doubleKnockTime=200);
+
         virtual void update();
         virtual void setSpeed(double speed);
+
         virtual unsigned char id();
 };
 

@@ -2,14 +2,14 @@
 #define TIMER_H
 
 class Timer {
-    public:
-        Timer(long interval);
-        bool tick();
-        void setInterval(long interval);
-
     private:
         long interval;
         long lastTick;
+    public:
+        Timer(long interval);
+
+        bool tick();
+        void setInterval(long interval);
 };
 
 #endif
