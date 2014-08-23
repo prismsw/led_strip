@@ -4,46 +4,33 @@
 
 #include <Arduino.h>
 
-TripwireEffect::TripwireEffect(const Color& color, int treshold, int interval, int lockTime):Effect(color) {
+
+TripwireEffect::TripwireEffect(const Color& color, int treshold, int interval):Effect(color) {
     this->onColor = new Color(color);
     this->black = new Color(0,0,0);
 
-    this->treshold = treshold;
     this->interval = interval;
-    this->lockTime = lockTime;
-    this->sonar = new NewPing(US1_TRIGGER_PIN, US1_ECHO_PIN, 200);
     this->usTimer = new Timer(interval);
+    this->tripwire = new USTripwire(0, treshold, 200);
 }
 
 TripwireEffect::~TripwireEffect() {
     delete onColor;
     delete black;
 
-    delete sonar;
     delete usTimer;
+    delete tripwire;
 }
 
 void TripwireEffect::update() {
     if(usTimer->tick()) {
-        if((millis() - lastTripped) > lockTime) {
-            unsigned int distance = sonar->convert_cm(sonar->ping_median(3));
+        tripwire->update();
 
-            if(distance > 0 && distance < treshold) {
-                lastTripped = millis();
-                if(!isTripped) {
-                    isTripped = true;
-
-                    if(*currentColor == *black) {
-                        *currentColor = *onColor;
-                    }
-                    else {
-                        *currentColor = *black;
-                    }
-                }
-            }
-            else {
-                isTripped = false;
-            }
+        if(tripwire->getCount() > 0) {
+            *currentColor = *onColor;
+        }
+        else {
+            *currentColor = *black;
         }
     }
 }

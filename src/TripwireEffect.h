@@ -3,8 +3,8 @@
 
 #include "Color.h"
 #include "Effect.h"
-#include "Pins.h"
 #include "Timer.h"
+#include "USTripwire.h"
 
 #include <NewPing.h>
 
@@ -13,21 +13,15 @@
  */
 class TripwireEffect : public Effect {
     private:
-        NewPing *sonar;
+        USTripwire* tripwire;
         Timer *usTimer;
 
         Color* onColor;
         Color* black;
 
-        int treshold;
         int interval;
-        int lockTime;
-
-        long lastTripped;
-        bool isTripped = false;
-
     public:
-        TripwireEffect(const Color& color, int treshold=120, int interval=100, int lockTime=500);
+        TripwireEffect(const Color& color, int treshold=120, int interval=100);
         ~TripwireEffect();
 
         virtual void update();
