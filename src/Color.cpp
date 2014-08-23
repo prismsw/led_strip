@@ -19,15 +19,15 @@ Color::Color(int r, int g, int b) {
     updateHSV();
 }
 
-int Color::boundedRGB(int val) {
+int Color::boundedRGB(int val) const {
     return boundedVal(val, 0, 255);
 }
 
-double Color::boundedH(double val) {
+double Color::boundedH(double val) const {
     return boundedVal(val, 0.0, 360.0);
 }
 
-double Color::boundedSV(double val) {
+double Color::boundedSV(double val) const {
     return boundedVal(val, 0.0, 1.0);
 }
 
@@ -123,15 +123,15 @@ void Color::updateHSV() {
     this->h = hVal;
 }
 
-int Color::getR() {
+int Color::getR() const {
     return r;
 }
 
-int Color::getG() {
+int Color::getG() const {
     return g;
 }
 
-int Color::getB() {
+int Color::getB() const {
     return b;
 }
 
@@ -182,15 +182,15 @@ void Color::incB(int b) {
     updateHSV();
 }
 
-double Color::getH() {
+double Color::getH() const {
     return h;
 }
 
-double Color::getS() {
+double Color::getS() const {
     return s;
 }
 
-double Color::getV() {
+double Color::getV() const {
     return v;
 }
 

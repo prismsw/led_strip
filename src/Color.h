@@ -22,7 +22,7 @@ class Color {
          * Return: Either val, lbound or ubound
          */
         template <typename T>
-        T boundedVal(T val, T lbound, T ubound) {
+        T boundedVal(T val, T lbound, T ubound) const {
             if(val < lbound) {
                 return lbound;
             }
@@ -37,17 +37,17 @@ class Color {
         /**
          * boundedRGB() - constrains an arbitary R/G/B value (0-255)
          */
-        int boundedRGB(int);
+        int boundedRGB(int) const;
 
         /**
          * boundedH() - constrains an arbitary hue value (0-360)
          */
-        double boundedH(double);
+        double boundedH(double) const;
 
         /**
          * boundedSV() - constrains an arbitary saturation/value value (0-1)
          */
-        double boundedSV(double);
+        double boundedSV(double) const;
 
         /**
          * updateHSV() - updates the HSV values to reflect the current RGB values
@@ -74,9 +74,9 @@ class Color {
         /**
          * RGB getters
          */
-        int getR();
-        int getG();
-        int getB();
+        int getR() const;
+        int getG() const;
+        int getB() const;
 
         /**
          * RGB setters
@@ -101,9 +101,9 @@ class Color {
         /*
          * HSV getters
          */
-        double getH();
-        double getS();
-        double getV();
+        double getH() const;
+        double getS() const;
+        double getV() const;
 
         /*
          * HSV setters

@@ -37,7 +37,6 @@ void setup() {
     Serial.begin(9600);
 
     irrecv.enableIRIn();
-    effect = new StaticEffect(Color(0,0,0));
 }
 
 void loop() {
