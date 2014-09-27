@@ -1,13 +1,15 @@
 #include "USTripwire.h"
 #include "Pins.h"
+#include "Timer.h"
 
 #include <Arduino.h>
 
-USTripwire::USTripwire(byte inCount, byte treshold, byte maxDist) {
+USTripwire::USTripwire(unsigned int holdTime, byte inCount, byte treshold, byte maxDist) {
     this->treshold = 120;
     this->inCount = inCount;
     this->usLeft = new NewPing(US1_TRIGGER_PIN, US1_ECHO_PIN, maxDist);
     this->usRight = new NewPing(US2_TRIGGER_PIN, US2_ECHO_PIN, maxDist);
+    this->holdTimer = new Timer(holdTime);
 }
 
 USTripwire::~USTripwire() {
@@ -32,6 +34,11 @@ Event USTripwire::update() {
     Event e2 = processStateMachine(sel);
     processEvent(e2);
 
+    if(holdTimer->tick()) {
+        processStateMachine(HOLD_OUT);
+    }
+
+    // TODO actually return something
     return NOTHING;
 }
 
@@ -110,6 +117,20 @@ Event USTripwire::processStateMachine(SensorEvent e) {
                     state = R_L;
                     break;
                 case R_OUT:
+                    state = H_R_C;
+                    holdTimer->reset();
+                    break;
+            }
+            break;
+        case H_R_C:
+            switch(e) {
+                case L_IN:
+                    state = R_L;
+                    break;
+                case R_IN:
+                    state = R_C;
+                    break;
+                case HOLD_OUT:
                     state = C_C;
                     break;
             }
@@ -135,13 +156,26 @@ Event USTripwire::processStateMachine(SensorEvent e) {
                     break;
             }
             break;
-
         case L_C:
             switch(e) {
                 case R_IN:
                     state = L_R;
                     break;
                 case L_OUT:
+                    state = H_L_C;
+                    holdTimer->reset();
+                    break;
+            }
+            break;
+        case H_L_C:
+            switch(e) {
+                case R_IN:
+                    state = L_R;
+                    break;
+                case L_IN:
+                    state = L_C;
+                    break;
+                case HOLD_OUT:
                     state = C_C;
                     break;
             }

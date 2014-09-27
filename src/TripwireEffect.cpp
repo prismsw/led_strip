@@ -1,6 +1,7 @@
 #include "TripwireEffect.h"
 #include "Pins.h"
 #include "Timer.h"
+#include "USTripwire.h"
 
 #include <Arduino.h>
 
@@ -11,7 +12,7 @@ TripwireEffect::TripwireEffect(const Color& color, int treshold, int interval):E
 
     this->interval = interval;
     this->usTimer = new Timer(interval);
-    this->tripwire = new USTripwire(0, treshold, 200);
+    this->tripwire = new USTripwire(5000, 0, treshold, 200);
 }
 
 TripwireEffect::~TripwireEffect() {
