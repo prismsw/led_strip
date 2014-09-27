@@ -10,6 +10,7 @@ class Timer {
 
         bool tick();
         void setInterval(long interval);
+        void reset();
 };
 
 #endif

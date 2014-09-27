@@ -20,3 +20,7 @@ bool Timer::tick() {
 void Timer::setInterval(long interval) {
     this->interval = interval;
 }
+
+void Timer::reset() {
+    lastTick = millis();
+}
