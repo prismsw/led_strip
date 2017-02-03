@@ -18,16 +18,11 @@ void KnockEffect::update() {
         if(val >= treshold) {
             // If the time that passed since the end of the last knock exceeds the double knock time
             if(((time - lastKnock) - knockLength) <= doubleKnockTime) {
-                // Set to black
-                currentColor->setV(0);
-            }
-            else {
-                // If the current color is black, set it to red
+                // If it is off turn it on and vice versa
                 if(currentColor->getV() == 0) {
-                    currentColor->setRGB(255,0,0);
-                }
-                else {
-                    currentColor->cycleH(increment);
+                    currentColor->setRGB(255,255,255);
+                } else {
+                    currentColor->setRGB(0,0,0);
                 }
             }
 
