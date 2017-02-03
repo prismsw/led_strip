@@ -29,16 +29,4 @@
  */
 #define KNOCK_PIN A15
 
-/**
- * Ultrasonic sensor 1
- */
-#define US1_TRIGGER_PIN A8
-#define US1_ECHO_PIN A9
-
-/**
- * Ultrasonic sensor 2
- */
-#define US2_TRIGGER_PIN A10
-#define US2_ECHO_PIN A11
-
 #endif

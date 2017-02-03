@@ -26,6 +26,16 @@ IRrecv irrecv(IR_PIN);
 decode_results irresults;
 int lastResult = 0x0;
 
+void * operator new(size_t size)
+{
+  return malloc(size);
+}
+
+void operator delete(void * ptr)
+{
+  free(ptr);
+}
+
 void setup() {
     pinMode(R_PIN, OUTPUT);
     pinMode(G_PIN, OUTPUT);
