@@ -7,7 +7,6 @@
 #include "KnockEffect.h"
 #include "Jump3Effect.h"
 #include "Jump7Effect.h"
-#include "TripwireEffect.h"
 
 #include <IRremote.h>
 
@@ -110,7 +109,7 @@ void handleSerial() {
             int h = buffer[1] / 255.0 * 360.0;
             int s = buffer[2] / 255.0;
             int v = buffer[3] / 255.0;
-            
+
             color->setHSV(h,s,v);
             Serial.write(buffer, API_BUFFER_LENGTH);
         }
@@ -136,9 +135,6 @@ void handleSerial() {
                 break;
             case 5:
                 changeEffect(new KnockEffect(*color, 60.0));
-                break;
-            case 6:
-                changeEffect(new TripwireEffect(*color));
                 break;
             }
             Serial.write(buffer, API_BUFFER_LENGTH);
@@ -170,7 +166,6 @@ void handleSerial() {
              * Jump3    = 3
              * Jump7    = 4
              * Knock    = 5
-             * Tripwire = 6
              */
             outBuffer[5] = effect->id();
             addChecksum(outBuffer);
@@ -407,16 +402,13 @@ void switchIRVal(int irval, bool repeat) {
             }
             break;
         case 0xFF20DF:
-            // jump3
+            // knock
             if(!repeat) {
                 changeEffect(new KnockEffect(*color, 60.0));
             }
             break;
         case 0xFFA05F:
-            // jump7
-            if(!repeat) {
-                changeEffect(new TripwireEffect(*color));
-            }
+            // ignore
             break;
         case 0xFF609F:
             // fade3
