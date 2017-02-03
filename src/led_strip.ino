@@ -5,8 +5,6 @@
 #include "FadeEffect.h"
 #include "BlinkEffect.h"
 #include "KnockEffect.h"
-#include "Jump3Effect.h"
-#include "Jump7Effect.h"
 
 #include <IRremote.h>
 
@@ -137,12 +135,6 @@ void handleSerial() {
             case 2:
                 changeEffect(new FadeEffect(*color, speed, 1));
                 break;
-            case 3:
-                changeEffect(new Jump3Effect(speed));
-                break;
-            case 4:
-                changeEffect(new Jump7Effect(speed));
-                break;
             case 5:
                 changeEffect(new KnockEffect(*color, 60.0));
                 break;
@@ -173,8 +165,6 @@ void handleSerial() {
              * Static   = 0
              * Blink    = 1
              * Fade     = 2
-             * Jump3    = 3
-             * Jump7    = 4
              * Knock    = 5
              */
             outBuffer[5] = effect->id();
